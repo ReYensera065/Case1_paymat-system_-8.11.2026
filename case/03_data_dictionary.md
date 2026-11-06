@@ -1,0 +1,30 @@
+
+
+| Поле            | Тип     | Обяз.       | Ограничение                                                                                                                                | Пример               | Код ошибки                                                         | Комментарий                                                                                 |
+| --------------- | ------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| order\_id       | string  | да(клиен)   | непустая строка длиной 1--64 символа; допустимы  <br>латинские буквы, цифры, `_` и `-`. Регулярное выражение:  <br>`^[A-Za-z0-9_-]{1,64}$` | ord_1001             | VALIDATION\_ERROR INVALID\_FORMAT DUPLICATE_ORDER                  | Номер заказа в системе                                                                      |
+| recipient       | strinfg | да(клиент)  | ID должен присутствовать в `recipients.csv`; статус  <br>получателя должен быть `ACTIVE`                                                   | clinic_medservice    | VALIDATION\_ERROR RECIPIENT\_NOT\_FOUND                            | В какой отдел                                                                               |
+| purpose         | string  | Да(клиент)  | от 1 до 200 символов; не должно содержать PAN или  <br>CVV.                                                                                | Приём терапевта      | VALIDATION_ERROR INVALID_PURPOSE                                   | Направление в отделе                                                                        |
+| amount          | float   | Да(клиент)  | строго больше 0 и не более 1 000 000; не более 2  <br>знаков после десятичной точки.                                                       | 2500.00              | VALIDATION_ERROR AMOUNT\_OUT\_OF\_RANGE INVALID\_AMOUNT\_PRECISION | сумма платежа                                                                               |
+| currency        | string  | Да(клиент)  | трёхбуквенный код валюты по ISO 4217; сейчас  <br>поддерживается только `RUB`.                                                             | RUB                  | VALIDATION\_ERROR UNSUPPORTED\_CURRENCY                            | валюта платежа                                                                              |
+| status          | string  | Да(клиент)  | одно из 6 значений: `CREATED`, `PENDING`,  <br>`SUCCESS`, `DECLINED`, `ERROR`, `CANCELED`.                                                 | SUCCESS              | VALIDATION\_ERROR                                                  | статус операции                                                                             |
+| error\_code     | string  | нет(сервер) | значение только из каталога `08/errors.md`                                                                                                 | INSUFFICIENT_FUNDS   |                                                                    | Название ошибки, которая появляется при DECLINED и ERROR                                    |
+| idempotency_key | string  | да(клиент)  | строка длиной 8--64 символа; ключ уникален в  <br>течение 24 часов.                                                                        | idem_0002            | VALIDATION\_ERROR DUPLICATE_REQUEST                                | Ключ идемпотентности запроса                                                                |
+| created\_at     | string  | Да(сервер)  | дата и время в формате ISO 8601. Для UTC  <br>используется суффикс `Z`, например `YYYY-MM-DDTHH:mm:ssZ`.                                   | 2025-11-01T08:30:00Z | VALIDATION\_ERROR INVALID\_FORMAT                                  | Дата и время создания операции                                                              |
+| confirmed\_at   | string  | Нет(сервер) | дата и время в формате ISO 8601; заполняется при  <br>подтверждении платежа, обычно при статусе `SUCCESS`; не раньше  <br>`created_at`     | 2025-11-01T08:00:03Z | INVALID\_FORMAT                                                    | Дата и время подтверждения платежа                                                          |
+| correlation\_id | string  | Да(сервер)  | непустой идентификатор для трассировки запроса в  <br>логах и между сервисами                                                              | corr_0001            | VALIDATION\_ERROR                                                  | Уникальный идентификатор, позволяющий отслеживать запрос между различными сервисами системы |
+| payment\_id     | string  | да (сервер) | UUID v4 или формат `pay_\\d{4}`                                                                                                            | pay\_0001            | —                                                                  | генерируется сервисом, от клиента не приходит                                               |
+
+| VALIDATION\_ERROR           |
+| --------------------------- |
+| INVALID\_FORMAT             |
+| AMOUNT\_OUT\_OF\_RANGE      |
+| UNSUPPORTED\_CURRENCY       |
+| RECIPIENT\_NOT\_FOUND       |
+| INVALID_PURPOSE             |
+| INVALID\_AMOUNT\_PRECISION  |
+| DUPLICATE_ORDER (HTTP 409)  |
+| DUPLICATE_REQUEST(HTTP 200) |
+|                             |
+
+
