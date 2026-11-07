@@ -15,16 +15,5 @@
 | correlation\_id | string  | Да(сервер)  | непустой идентификатор для трассировки запроса в  <br>логах и между сервисами                                                              | corr_0001            | VALIDATION\_ERROR                                                  | Уникальный идентификатор, позволяющий отслеживать запрос между различными сервисами системы |
 | payment\_id     | string  | да (сервер) | UUID v4 или формат `pay_\\d{4}`                                                                                                            | pay\_0001            | —                                                                  | генерируется сервисом, от клиента не приходит                                               |
 
-| VALIDATION\_ERROR           |
-| --------------------------- |
-| INVALID\_FORMAT             |
-| AMOUNT\_OUT\_OF\_RANGE      |
-| UNSUPPORTED\_CURRENCY       |
-| RECIPIENT\_NOT\_FOUND       |
-| INVALID_PURPOSE             |
-| INVALID\_AMOUNT\_PRECISION  |
-| DUPLICATE_ORDER (HTTP 409)  |
-| DUPLICATE_REQUEST(HTTP 200) |
-|                             |
 
 
